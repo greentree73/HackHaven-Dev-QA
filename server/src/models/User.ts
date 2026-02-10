@@ -14,12 +14,12 @@ interface UserAttributes {
   updatedAt?: Date;
 }
 
-// TODO: Define optional attributes for creation (id, timestamps are auto-generated)
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+//  Define optional attributes for creation (id, timestamps are auto-generated)
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'|'createdAt'|'updatedAt'> {}
 
-// TODO: Create the User class extending Model
+//  Create the User class extending Model
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  // TODO: Declare public properties here
+  //  Declare public properties here
   public id!: number;
   public username!: string;
   public email!: string;
@@ -28,10 +28,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public readonly updatedAt!: Date;
   }
 
-// TODO: Initialize the User model
+//  Initialize the User model
 User.init(
   {
-    // TODO: Define your model attributes here
+    //  Define your model attributes here
     // Remember:
     // - id should be primaryKey and autoIncrement
     // - username should be unique and not null

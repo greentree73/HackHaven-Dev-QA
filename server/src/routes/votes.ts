@@ -8,54 +8,62 @@ const router = Router();
 // TODO: POST /api/answers/:answerId/vote - Cast or update vote (protected)
 router.post('/:answerId/vote', authenticate, async (req: Request, res: Response) => {
   // TODO: Get answerId from params
-  // const { answerId } = req.params;
+   const { answerId } = req.params;
 
   // TODO: Get value from req.body (should be 1 or -1)
-  // const { value } = req.body;
+   const { value } = req.body;
 
   // TODO: Validate value is 1 or -1
-  // if (value !== 1 && value !== -1) return 400 "Invalid vote value"
+   if (value !== 1 && value !== -1)
+     return res.status(400).send("Invalid vote value");
 
   // TODO: Check if answer exists
-  // const answer = await Answer.findByPk(answerId);
+   const answer = await Answer.findByPk(answerId);
   // If not found, return 404
+   if (!answer) 
+    return res.status(404).send("Answer not found");
 
   // TODO: Check if user already voted on this answer
-  // const existingVote = await Vote.findOne({
-  //   where: { answerId, userId: req.user!.id }
-  // });
+   const existingVote = await Vote.findOne({
+     where: { answerId, userId: req.user!.id }
+   });
 
   // TODO: If vote exists, update it
-  // if (existingVote) {
-  //   await existingVote.update({ value });
-  //   return res.json({ message: 'Vote updated' });
-  // }
+   if (existingVote) {
+     await existingVote.update({ value });
+     return res.json({ message: 'Vote updated' });
+   }
 
   // TODO: Otherwise, create new vote
-  // await Vote.create({
-  //   value,
-  //   answerId: Number(answerId),
-  //   userId: req.user!.id
-  // });
+   await Vote.create({
+     value,
+     answerId: Number(answerId),
+     userId: req.user!.id
+   });
 
   // TODO: Return success message
+  return res.json({ message: 'Vote casted' });
 });
 
 // TODO: DELETE /api/answers/:answerId/vote - Remove vote (protected)
 router.delete('/:answerId/vote', authenticate, async (req: Request, res: Response) => {
   // TODO: Get answerId from params
+  const { answerId } = req.params;
 
   // TODO: Find user's vote on this answer
-  // const vote = await Vote.findOne({
-  //   where: { answerId, userId: req.user!.id }
-  // });
+   const vote = await Vote.findOne({
+     where: { answerId, userId: req.user!.id }
+   });
 
   // TODO: If no vote found, return 404 "No vote found"
+  if (!vote)
+    return res.status(404).send("No vote found");
 
   // TODO: Delete the vote
-  // await vote.destroy();
+   await vote.destroy();
 
   // TODO: Return success message
+  return res.json({ message: 'Vote removed successfully' });
 });
 
 export default router;
