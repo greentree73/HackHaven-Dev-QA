@@ -10,6 +10,7 @@ interface VoteAttributes {
   answerId: number;
   userId: number;
   createdAt?: Date;
+  
 }
 
 interface VoteCreationAttributes extends Optional<

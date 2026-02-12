@@ -4,16 +4,17 @@ import dotenv from 'dotenv';
 import sequelize, { testConnection } from './config/database';
 
 // Import your route files
-import authRoutes from './routes/auth';
-import questionRoutes from './routes/questions';
-import answerRoutes from './routes/answers';
-import voteRoutes from './routes/votes';
+import authRoutes from './routes/authRoutes';
+import questionRoutes from './routes/questionRoutes';
+import answerRoutes from './routes/answerRoutes';
+import voteRoutes from './routes/voteRoutes';
 
 // Import your models to ensure associations are loaded
-import User from './models/User';
-import Question from './models/Question';
-import Answer from './models/Answer';
-import Vote from './models/Vote';
+//import User from './models/User';
+//import Question from './models/Question';
+//import Answer from './models/Answer';
+//import Vote from './models/Vote';
+import "./models";
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ const PORT = process.env.PORT || 4000;
 // Add routes
 app.use('/api/auth', authRoutes);
 app.use('/api/questions', questionRoutes);
+app.use("/api/questions", answerRoutes);
 app.use('/api/answers', answerRoutes);
 app.use('/api/answers', voteRoutes);
 

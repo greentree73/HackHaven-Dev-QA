@@ -37,9 +37,9 @@ router.post(
 
     // TODO: Fetch created answer with user info
     // Use findByPk with include
-    const answerWithUser = await Answer.findByPk(answer.id, {
-      include: [User],
-    });
+    const answerWithUser = await Answer.findByPk(answer.id)/*, {
+      include: [{model: User, as: "user"}],
+    });*/
 
     // TODO: Return created answer
     res.json(answerWithUser);
@@ -87,7 +87,7 @@ router.delete("/:id", authenticate, async (req: Request, res: Response) => {
   }
 
   // TODO: Delete answer
-  await Answer.destroy();
+  await answer.destroy();
 
   // TODO: Return success message
   res.json({ message: "Answer deleted successfully" });

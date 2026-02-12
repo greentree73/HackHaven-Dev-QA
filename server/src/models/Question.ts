@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import index from '../models/index';
+import type Answer from "./Answer";
                                          
 // Define Question attributes interface
 // Hint: Question should have id, title, body, userId, createdAt, updatedAt
@@ -26,10 +26,10 @@ class Question
   public title!: string;
   public body!: string;
   public userId!: number;
-  public createdAt?: Date;
-  public updatedAt?: Date;
+  public createdAt!: Date;
+  public updatedAt!: Date;
 
-  
+  public answers?: Answer[];
 }
 
 // Initialize the Question model

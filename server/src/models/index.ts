@@ -60,7 +60,7 @@ Answer.hasMany(Vote, {
      as: "votes" 
 });
 
-export default { Question, Answer, Vote, User };
+export { Question, Answer, Vote, User };
 
 
 

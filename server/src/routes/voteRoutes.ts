@@ -30,6 +30,7 @@ router.post('/:answerId/vote', authenticate, async (req: Request, res: Response)
 
   // TODO: If vote exists, update it
    if (existingVote) {
+     //const updatedValue = existingVote.value + value;
      await existingVote.update({ value });
      return res.json({ message: 'Vote updated' });
    }

@@ -1,9 +1,7 @@
 import { Router, Request, Response } from "express";
-import Question from "../models/Question";
-import Answer from "../models/Answer";
-import Vote from "../models/Vote";
-import User from "../models/User";
+import { Question, User, Answer, Vote } from "../models";
 import { authenticate } from "../middleware/auth";
+
 
 const router = Router();
 
@@ -20,21 +18,22 @@ router.get("/", async (req: Request, res: Response) => {
 
 // TODO: GET /api/questions/:id - Get single question with answers
 router.get("/:id", async (req: Request, res: Response) => {
-  // TODO: Get id from params
+  // TODO: Get id from params                              
   const { id } = req.params;
   // TODO: Find question by id with User and Answers
   // Include Answer's User and Votes
   const question = await Question.findByPk(id, {
     include: [
-      { model: User, as: "user" },
-      { model: Answer, as: "answers",
+     { model: Answer, as: "answers",
         include: [
           { model: User, as: "user" },
-          { model: Vote, as: "votes", include: [User] },
+          { model: Vote, as: "votes"},
         ],
-       },
-    ],
-  });
+      }
+      ]
+       });
+  
+  
   // TODO: If not found, return 404 with message "Question not found"
   if (!question) {
     return res.status(404).send({ message: "Question not found" });
@@ -43,16 +42,17 @@ router.get("/:id", async (req: Request, res: Response) => {
   // TODO: Calculate vote counts for each answer
   // For each answer, sum up the vote values
   // Also include current user's vote if authenticated
-  (question.answers ?? []).forEach((answer) => {
-    const votes = answer.votes ?? [];
+  if (question.answers) {
+    question.answers.forEach((answer: any) => {
+      const votes = answer.votes ?? [];
 
-    // Total votes for this answer
-    answer.voteCount = votes.reduce((total, vote) => total + vote.value, 0);
+      answer.voteCount = votes.reduce(
+        (total: number, vote: Vote) => total + vote.value,
+        0,
+      );
 
-    // Current user's vote (if logged in)
-    answer.currentUserVote =
-      votes.find((vote:Vote) => vote.userId === req.user?.id)?.value ?? null;
-  });
+     });
+  }
 
   // TODO: Return question with answers
   res.json(question);
@@ -86,7 +86,7 @@ router.post("/", authenticate, async (req: Request, res: Response) => {
   // TODO: Fetch created question with user info
   // Use findByPk with include
   const questionWithUser = await Question.findByPk(question.id, {
-    include: [User],
+    include: [{model: User, as: "user" }],
   });
   // TODO: Return created question
   res.json(questionWithUser);

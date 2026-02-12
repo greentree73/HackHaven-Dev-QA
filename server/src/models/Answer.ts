@@ -25,9 +25,10 @@ class Answer
   public body!: string;
   public questionId!: number;
   public userId!: number;
-  public createdAt?: Date;
-  public updatedAt?: Date;
- 
+  public createdAt!: Date;
+  public updatedAt!: Date;
+
+  
 }
 
 // Initialize the Answer model
